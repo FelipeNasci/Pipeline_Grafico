@@ -1,4 +1,4 @@
-# T1 ICG - Rasterização de Linhas
+# T2 ICG - Rasterização de Linhas
 
 ## Participantes
 
@@ -17,20 +17,191 @@ Glauber Ferreira Ângelo - 20160144357
 ### [Referências](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#refer%C3%AAncias-1)
 
 # Introdução
-
-  Este trabalho tem como objetivo apresentar alguns algoritmos para rasterização de linhas em um monitor gráfico diretamente e memória de video, como os sistemas operacionais modernos impedem acesso direto a memória de vídeo, foi utilizado um framework para realizar esta simulação.
-
-  Mas antes, devemos conhecer alguns conceitos como: primitivas, rasterização, como rasterizar primitivas gráficas e o funcionamento em um monitor gráfico.
   
-## Rasterização
-
-  Primitivas em computação gráfica são elementos básicos, como pontos e retas. A rasterização é responsável por capturar estas primitivas e transformá-las em novas imagens, ou seja, é justamente o que acontece em monitores, displays, e até mesmo impressoras.
-
-## Monitores
-
-  Inicialmente devemos imaginar o display como uma matriz _(grid)_ bidimensional, composto por **_m linhas_** e **_n colunas_**, onde no centro de cada posição da matriz existe um ponto com um par de coordenadas _(x,y)_. 
+  Este é o segundo trabalho de computação gráfica e tem como objetivo apresentar todo o processo de renderização de um objeto desde a sua criação até a apresentação na tela.
+  Ao final serão utilizados algoritmos para rasterização das primitivas que geram o objeto.
   
+## Considerações iniciais
+
+  Para um melhor entendimento deste texto é necessário o conhecimento sobre coordenadas homogêneas e multiplicações operacões entre matrizes e vetores.
   
+  Os vetores apresentados no texto serão do tipo coluna;
+  
+  Os vetores contidos nas matrizes serão do tipo linha;
+  
+  Todas as matrizes e vetores utilizadas no texto estão em 4 dimensões, onde os objetos são 3D e a 4ª coordenada é homogênea.
+  
+## Pipeline Gráfico
+
+  Em computação, o pipeline gráfico é um modelo conceitual que descreve todos os passos necessários para transformar uma cena 3D em 2D recebendo as coordenadas de tela. Denominamos cada etapa por “Espaço”, onde para da renderizar uma cena passamos por 6 espaços e cada um desempenha uma função específica.
+  
+## Transformações Geométricas
+
+  Ao longo do pipeline gráfico são executadas uma série de transformações que na realidade são apenas operações entre matrizes e vetores, a seguir veremos as transformações mais comuns utilizadas neste processo.
+  
+### Escala
+
+  Esta matriz de transformação aumenta ou diminui o tamanho do objeto.
+  
+  //Inserir imagem das casinhas mostradas no slide
+  
+ ```C
+  escala = {   sX, 0.0f, 0.0f, 0,
+	     0.0f,   sY, 0.0f, 0,
+	     0.0f, 0.0f,   sZ, 0,
+	     0.0f, 0.0f, 0.0f, 1.0f };
+```
+
+  A escala em um objeto possui 02 tipos:
+
+  Isotrópica: Quando todos os eixos recebem o mesmo valor de escala
+
+```
+sX = sY;
+```
+
+  Anisotrópica: Quando os eixos recebem valores de escala diferentes
+  
+```
+sX ≠ sY;
+```
+
+//EXIBIR IMAGENS DE ESCALA ISOTRÓPICA E ANISOTRÓPICA CONTIDAS NO SLIDE
+
+  Escala de objetos fora da origem recebem uma translação implícita. Uma forma de contornar este problema é translada-lo para a origem, escalar e por fim translada-lo para o ponto incial.
+  
+//EXIBIR IMAGENS DE ESCALA DE OBJETOS FORA DA ORIGEM CONTIDAS NO SLIDE
+
+### Espelhamento
+
+  O espelhamento é realizado por uma matriz de escala com valor = -1 no eixo em que se deseja espelhar (x,y,z). Nos casos em que se deseja espelhar e modificar o tamanho do objeto basta multiplicá-lo pelo valor de escala negativo.
+
+//Exibir imagem de de objetos espelhados
+
+### Rotação
+
+  É o movimento giratório em torno dos eixos fixados. no openGL a rotação por padrão é no sentido anti-horário, porém para rotacionar no sentido inverso basta aplicar uma angulação oposta ao ângulo desejado.
+  
+  Rotação em torno do eixo X
+   
+```C
+rotateX   (1,  0,          0,          0,
+	   0,  cos(rX),    -sin(rX),   0,
+	   0,  sin(rX),    cos(rX),    0,
+           0,  0,          0,          1 );
+```
+
+Rotação em torno do eixo Y
+
+```C
+rotateY   (cos(rY),    0,  sin(rY),    0,
+           0,          1,  0,          0,
+           -sin(rY),   0,  cos(rY),    0,
+           0,          0,  0,          1 );
+```
+
+Rotação em torno do eixo Z
+
+```C
+rotateZ   (cos(rZ),    -sin(rZ),   0,  0,
+	   sin(rZ),    cos(rZ),    0,  0,
+	   0,          0,          1,  0,
+	   0,          0,          0,  1 );
+```
+  
+  Rotações fora da origem geram uma translação implícita
+  
+### Shear
+
+  Esta transformação fixa um conjunto de vértices em um ponto e translada o restante.
+
+//Imagem Shear
+  
+  Toda matriz com diagonal principal igual a “1”  e o restante diferente de 1’s é uma matriz de shear. As API’s gráficas não implementam o shear, o mesmo é obtido através de transformações de rotação e escala.
+
+### Translação
+  
+  A translação é o movimento que um objeto faz de um ponto a outro. Basicamente somamos o valor de translação a coordenada correspondente do objeto a ser transladado.
+  Não é possível obter uma matriz de translação sem a utilização de coordenadas homogênias.
+  
+```C
+translacao = {1.0f, 0.0f, 0.0f, tX,
+	      0.0f, 1.0f, 0.0f, tY,
+	      0.0f, 0.0f, 1.0f, tZ,
+	      0.0f, 0.0f, 0.0f, 1.0f };
+```
+
+### Composição de matrizes
+
+  Podemos utilizar todas as transformações desejadas em uma única matriz correspondente, esta prática reduz drasticamente o número de operações, pois não é preciso multiplicar a cada frame várias matrizes para obter uma transformação, este processo é executado apenas uma vez.
+  Ex: Seja: 
+  T uma matriz de translação; S uma matriz de escala;  R uma matriz de rotação no eixo “x”;  M será uma matriz de composta por estas transformações respectivamente
+  
+```
+  T =				S =				R =
+
+	1   0   0   5			2   0   0   0			1	0   	  0   	    0
+	0   1   0   3			0   3   0   0			0   	Cos(45)  -Sin(45)   0
+	0   0   1   2 			0   0   1   0			0   	Sin(45)   Cos(45)   0
+	0   0   0   1			0   0   0   1			0   	0   	  0   	    1
+```
+
+```
+  M = R * S * T
+  
+M =
+
+    2.00000    0.00000    0.00000   10.00000
+    0.00000    1.57597   -0.85090    3.02609
+    0.00000    2.55271    0.52532    8.70878
+    0.00000    0.00000    0.00000    1.00000
+
+```
+
+  Caso a ordem com que as matrizes sejam multiplicadas mude, o resultado será diferente
+  
+```
+  M = T * S * R
+
+M =
+
+   2.00000   0.00000   0.00000   5.00000
+   0.00000   1.57597  -2.55271   3.00000
+   0.00000   0.85090   0.52532   2.00000
+   0.00000   0.00000   0.00000   1.00000
+
+```
+
+
+
+a matriz M é composta por 03 transformações na seguinte ordem:
+1 translação em x = 5, y = 3, z = 2
+2 Escala em x = 2, y = 3 e z = 1
+3 Rotação de 45 em torno do eixo X
+
+
+M = R * E *  T
+
+M =
+
+    2.00000    0.00000    0.00000   10.00000
+    0.00000    1.57597   -0.85090    3.02609
+    0.00000    2.55271    0.52532    8.70878
+    0.00000    0.00000    0.00000    1.00000
+
+Perceba que a ordem se invertermos a ordem Inserindo primeiro a transformação de Rotação, em seguida a de escala e por último aplicar uma translação a matriz de resultante será modificada.
+
+M = T * E * R
+
+M =
+
+   2.00000   0.00000   0.00000   5.00000
+   0.00000   1.57597  -2.55271   3.00000
+   0.00000   0.85090   0.52532   2.00000
+   0.00000   0.00000   0.00000   1.00000
+
+
+
 ![Matriz-Grid](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/grids.png?raw=true)
 
 
