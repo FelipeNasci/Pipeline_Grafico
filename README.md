@@ -46,10 +46,10 @@ Glauber Ferreira Ângelo - 20160144357
   //Inserir imagem das casinhas mostradas no slide
   
  ```C
-escala   (   sX, 0.0f, 0.0f, 0,
-	   0.0f,   sY, 0.0f, 0,
-	   0.0f, 0.0f,   sZ, 0,
-	   0.0f, 0.0f, 0.0f, 1.0f );
+escala	( sX, 0.0f, 0.0f, 0.0f,
+	0.0f,   sY, 0.0f, 0.0f,
+	0.0f, 0.0f,   sZ, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f );
 ```
 
   A escala em um objeto possui 02 tipos:
@@ -103,7 +103,7 @@ rotateY   (cos(rY),    0,  sin(rY),    0,
 Rotação em torno do eixo Z
 
 ````C
-rotateZ   (cos(rZ),    -sin(rZ),   0,  0,
+rotateZ   (cos(rZ),   -sin(rZ),    0,  0,
 	   sin(rZ),    cos(rZ),    0,  0,
 	   0,          0,          1,  0,
 	   0,          0,          0,  1 );
@@ -207,6 +207,7 @@ M’ =
 
 
 ```
+
 ```
 M’ * M = Matriz_Identidade
 
@@ -292,6 +293,7 @@ No exemplo acima, os vértices do objeto sofrerão as transformações ao longo 
 ```C++
     vec3 direction ( lookAt - position );   //  Para onde a camera esta olhando no espaço da câmera
 ```
+
 ```C++
     //auxilia no calculo da base
     vec3 zAux ( -(direction) / length(direction) );                 	// Normalizando vetor de direcao
@@ -318,7 +320,12 @@ No exemplo acima, os vértices do objeto sofrerão as transformações ao longo 
 
     mat4 M_view ( T * Bt );		// Sistema de coordenadas da Câmera
 ```  
+
+## Espaço de Recorte
+
   
+
+
 
 
 ![Matriz-Grid](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/grids.png?raw=true)
