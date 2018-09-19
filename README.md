@@ -4,7 +4,7 @@
 
 Diego Felipe Gonçalves do Nascimento - 20170171680
 
-Glauber Ferreira Ângelo - 20160144357
+Danillo Medeiros Moraes Batista - 20160164313
 
 ### [Introdução](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#introdu%C3%A7%C3%A3o)
 
