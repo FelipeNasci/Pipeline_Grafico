@@ -31,6 +31,8 @@ Glauber Ferreira Ângelo - 20160144357
   
   Todas as matrizes e vetores utilizadas no texto estão em 4 dimensões, onde os objetos são 3D e a 4ª coordenada é homogênea.
   
+  Para elaboração deste trabalho foi utilizada a biblioteca GLM para tratar as operações com matrizes
+  
 ## Pipeline Gráfico
 
   Em computação, o pipeline gráfico é um modelo conceitual que descreve todos os passos necessários para transformar uma cena 3D em 2D recebendo as coordenadas de tela. Denominamos cada etapa por “Espaço”, onde para da renderizar uma cena passamos por 6 espaços e cada um desempenha uma função específica.
@@ -43,6 +45,7 @@ Glauber Ferreira Ângelo - 20160144357
 
   Esta matriz de transformação aumenta ou diminui o tamanho do objeto.
   
+  ![Escala](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/escala.PNG?raw=true)
   //Inserir imagem das casinhas mostradas no slide
   
  ```C
