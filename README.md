@@ -46,10 +46,10 @@ Glauber Ferreira Ângelo - 20160144357
   //Inserir imagem das casinhas mostradas no slide
   
  ```C
-escala = {   sX, 0.0f, 0.0f, 0,
+escala = (   sX, 0.0f, 0.0f, 0,
 	   0.0f,   sY, 0.0f, 0,
 	   0.0f, 0.0f,   sZ, 0,
-	   0.0f, 0.0f, 0.0f, 1.0f };
+	   0.0f, 0.0f, 0.0f, 1.0f );
 ```
 
   A escala em um objeto possui 02 tipos:
@@ -125,10 +125,10 @@ rotateZ   (cos(rZ),    -sin(rZ),   0,  0,
   Não é possível obter uma matriz de translação sem a utilização de coordenadas homogênias.
   
 ```C
-translacao = {1.0f, 0.0f, 0.0f, tX,
+translacao = (1.0f, 0.0f, 0.0f, tX,
 	      0.0f, 1.0f, 0.0f, tY,
 	      0.0f, 0.0f, 1.0f, tZ,
-	      0.0f, 0.0f, 0.0f, 1.0f };
+	      0.0f, 0.0f, 0.0f, 1.0f );
 ```
 
 ### Composição de matrizes
@@ -172,26 +172,20 @@ M =
 
 ```
 
+### Transformações inversas
+
+  Podem ocorrer situações em que ao aplicarmos uma transformação em um objeto tenhamos a necessidade de voltar para o estado anterior.
+  Suponha que após aplicamos as transformações de Rotação, Escala e Translação (nesta ordem) em M e necessitamos retornar para o ponto de origem. Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas na ordem oposta a aplicada na matriz original. Podemos fazer uma analogia com uma pilha
+  
+  Seja M = 
+  Chamaremos esta matriz de transformação de M’.
 
 
-a matriz M é composta por 03 transformações na seguinte ordem:
-1 translação em x = 5, y = 3, z = 2
-2 Escala em x = 2, y = 3 e z = 1
-3 Rotação de 45 em torno do eixo X
 
+para obtermos M’ necessitamos realizar o processo inverso, ou seja, aplicar primeiro as transformações de Translação, Escala e Rotação (nesta ordem), porém, apenas aplicar as transformações na ordem  contrária não adianta, devemos utilzar a matriz inversa de cada transformação para realizar esta tarefa.
 
-M = R * E *  T
-
-M =
-
-    2.00000    0.00000    0.00000   10.00000
-    0.00000    1.57597   -0.85090    3.02609
-    0.00000    2.55271    0.52532    8.70878
-    0.00000    0.00000    0.00000    1.00000
-
-Perceba que a ordem se invertermos a ordem Inserindo primeiro a transformação de Rotação, em seguida a de escala e por último aplicar uma translação a matriz de resultante será modificada.
-
-M = T * E * R
+```
+Seja M = T * E * R;
 
 M =
 
@@ -200,6 +194,56 @@ M =
    0.00000   0.85090   0.52532   2.00000
    0.00000   0.00000   0.00000   1.00000
 
+```
+
+M’ = R¹ -1 * E -1 * T -1 &alt;
+
+M’ =
+
+   0.50000   0.00000   0.00000  -2.50000
+   0.00000   0.17511   0.85090  -2.22713
+   0.00000  -0.28363   0.52532  -0.19974
+   0.00000   0.00000   0.00000   1.00000
+
+
+
+M’ * M = Matriz_Identidade
+
+   1.00000   0.00000   0.00000   0.00000
+   0.00000   1.00000  0.00000   0.00000
+   0.00000   0.00000   1.00000   0.00000
+   0.00000   0.00000   0.00000   1.00000
+
+
+Perceba que as transformações inversas são a ordem contrária das transformações originais:
+
+
+T -1 =
+
+   1   0   0  -X
+   0   1   0  -Y
+   0   0   1  -Z
+   0   0   0   1
+
+S -1 =
+
+   1/X   0   0   0
+   0   1/Y   0   0
+   0   0   1/Z   0
+   0   0   0   1
+
+A Rotação possui um caso especial, onde que para obter sua inversa basta calcular sua Transposta
+
+
+R -1 =
+
+   1	0   	  0   	    0
+   0   	Cos(θ)   Sin(θ)    0
+   0   	-Sin(θ)   Cos(θ)   0
+   0   	0   	  0   	    1
+
+
+//inserir rotação inversa em Y e Z
 
 
 ![Matriz-Grid](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/grids.png?raw=true)
