@@ -37,6 +37,8 @@ Glauber Ferreira Ângelo - 20160144357
 
   Em computação, o pipeline gráfico é um modelo conceitual que descreve todos os passos necessários para transformar uma cena 3D em 2D recebendo as coordenadas de tela. Denominamos cada etapa por “Espaço”, onde para da renderizar uma cena passamos por 6 espaços e cada um desempenha uma função específica.
   
+  ![pipeline](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Pipeline/pipelne.PNG?raw=true)
+  
 ## Transformações Geométricas
 
   Ao longo do pipeline gráfico são executadas uma série de transformações que na realidade são apenas operações entre matrizes e vetores, a seguir veremos as transformações mais comuns utilizadas neste processo.
@@ -68,7 +70,7 @@ sX = sY;
 sX ≠ sY;
 ```
 
-//EXIBIR IMAGENS DE ESCALA ISOTRÓPICA E ANISOTRÓPICA CONTIDAS NO SLIDE
+![iso_ani](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Escala_Iso_Ani.jpg?raw=true)
 
   Escala de objetos fora da origem recebem uma translação implícita. Uma forma de contornar este problema é translada-lo para a origem, escalar e por fim translada-lo para o ponto incial.
   
@@ -78,7 +80,7 @@ sX ≠ sY;
 
   O espelhamento é realizado por uma matriz de escala com valor = -1 no eixo em que se deseja espelhar (x,y,z). Nos casos em que se deseja espelhar e modificar o tamanho do objeto basta multiplicá-lo pelo valor de escala negativo.
 
-//Exibir imagem de de objetos espelhados
+![Mirror](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Espelhamento.PNG?raw=true)
 
 ### Rotação
 
@@ -117,13 +119,18 @@ rotateZ   (cos(rZ),   -sin(rZ),    0,  0,
 
   Esta transformação fixa um conjunto de vértices em um ponto e translada o restante.
 
-//Imagem Shear
+![shear](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/shear.PNG?raw=true)
   
   Toda matriz com diagonal principal igual a “1”  e o restante diferente de 1’s é uma matriz de shear. As API’s gráficas não implementam o shear, o mesmo é obtido através de transformações de rotação e escala.
+  
+  ![shear2](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/shear2.PNG?raw=true)
 
 ### Translação
   
   A translação é o movimento que um objeto faz de um ponto a outro. Basicamente somamos o valor de translação a coordenada correspondente do objeto a ser transladado.
+  
+  ![translacao](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Transla%C3%A7%C3%A3o.gif?raw=true)
+  
   Não é possível obter uma matriz de translação sem a utilização de coordenadas homogênias.
   
 ```C
@@ -225,6 +232,7 @@ A Rotação possui um caso especial, onde que para obter sua inversa basta calcu
 
 
 ## Espaço do Objeto
+
   É o processo de importação do objeto que se deseja renderizar, este objeto pode ser projetado por softwares especializados como Blender e Maya. Cada objeto é composto por uma lista de vértices, lista de arestas e conjunto de matrizes de transformação.
   A matriz deste espaço é chamada de MODEL.
   
@@ -237,7 +245,7 @@ A Rotação possui um caso especial, onde que para obter sua inversa basta calcu
   É o espaço em que a cena será criada, ele aloca cada objeto em sua devida posição através de transformações de rotação, escala e translação.
   A matriz deste espaço é chamada de VIEW. As transformações e vértices do objeto são aplicadas nesta matriz.
   
-  //Inserir imagens do espaço do universo, contidos no slide
+  ![Universe](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Universo/space_uni.PNG?raw=true)
   
 ## Espaço da Câmera
 
