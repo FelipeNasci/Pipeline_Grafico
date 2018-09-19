@@ -1,4 +1,4 @@
-# T2 ICG - Rasterização de Linhas
+# T2 ICG - Etapas do Pipeline Gráfico
 
 ## Participantes
 
@@ -8,7 +8,7 @@ Glauber Ferreira Ângelo - 20160144357
 
 ### [Introdução](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#introdu%C3%A7%C3%A3o)
 
-### [Rasterização de linhas](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#rasteriza%C3%A7%C3%A3o-de-linhas-1)
+### [Transformações Geométricas](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#rasteriza%C3%A7%C3%A3o-de-linhas-1)
 
 ### [Resultados](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#resultados-1)
 
