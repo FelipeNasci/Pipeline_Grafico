@@ -46,7 +46,7 @@ Glauber Ferreira Ângelo - 20160144357
   //Inserir imagem das casinhas mostradas no slide
   
  ```C
-escala = (   sX, 0.0f, 0.0f, 0,
+escala   (   sX, 0.0f, 0.0f, 0,
 	   0.0f,   sY, 0.0f, 0,
 	   0.0f, 0.0f,   sZ, 0,
 	   0.0f, 0.0f, 0.0f, 1.0f );
@@ -125,10 +125,10 @@ rotateZ   (cos(rZ),    -sin(rZ),   0,  0,
   Não é possível obter uma matriz de translação sem a utilização de coordenadas homogênias.
   
 ```C
-translacao = (1.0f, 0.0f, 0.0f, tX,
-	      0.0f, 1.0f, 0.0f, tY,
-	      0.0f, 0.0f, 1.0f, tZ,
-	      0.0f, 0.0f, 0.0f, 1.0f );
+translacao (1.0f, 0.0f, 0.0f, tX,
+	    0.0f, 1.0f, 0.0f, tY,
+	    0.0f, 0.0f, 1.0f, tZ,
+	    0.0f, 0.0f, 0.0f, 1.0f );
 ```
 
 ### Composição de matrizes
@@ -196,7 +196,7 @@ M =
 
 ```
 
-M’ = R¹ -1 * E -1 * T -1 &alt;
+M’ = R^-1 * S^-1 * T^-1;
 
 M’ =
 
