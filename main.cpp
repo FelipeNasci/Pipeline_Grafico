@@ -16,7 +16,7 @@ void MyGlDraw(void) {
 
 
 
-    objeto.t.setRotacao(0,rY,0);  //add ROTACAO nos 03 eixos
+    objeto.t.setRotacao(0,0,0);  //add ROTACAO nos 03 eixos
     //objeto.t.setEscala(1,1,5);
     //objeto.t.setTranslacao(rX,0,0);  //add TRANSLACAO nos 03 eixeos
 

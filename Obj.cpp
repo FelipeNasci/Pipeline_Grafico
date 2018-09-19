@@ -67,6 +67,9 @@ using namespace std;
 
     void Obj::monkey(){
 
+
+
+
         adicionaElemento( &vertex, {-0.039865,-0.172712,0.502146,1} );
         adicionaElemento( &vertex, {-0.914865,-0.172712,0.502146,1} );
         adicionaElemento( &vertex, {0.022635,-0.243024,0.424021,1} );
