@@ -46,10 +46,10 @@ Glauber Ferreira Ângelo - 20160144357
   //Inserir imagem das casinhas mostradas no slide
   
  ```C
-  escala = {   sX, 0.0f, 0.0f, 0,
-	     0.0f,   sY, 0.0f, 0,
-	     0.0f, 0.0f,   sZ, 0,
-	     0.0f, 0.0f, 0.0f, 1.0f };
+escala = {   sX, 0.0f, 0.0f, 0,
+	   0.0f,   sY, 0.0f, 0,
+	   0.0f, 0.0f,   sZ, 0,
+	   0.0f, 0.0f, 0.0f, 1.0f };
 ```
 
   A escala em um objeto possui 02 tipos:
@@ -102,12 +102,12 @@ rotateY   (cos(rY),    0,  sin(rY),    0,
 
 Rotação em torno do eixo Z
 
-```C
+````C
 rotateZ   (cos(rZ),    -sin(rZ),   0,  0,
 	   sin(rZ),    cos(rZ),    0,  0,
 	   0,          0,          1,  0,
 	   0,          0,          0,  1 );
-```
+````
   
   Rotações fora da origem geram uma translação implícita
   
