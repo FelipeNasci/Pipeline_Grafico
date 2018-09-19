@@ -3,8 +3,7 @@
 
 #define TRUE 1
 #define FALSE 0
-#define MAX 100
-
+#define MAX 3000
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

@@ -151,8 +151,9 @@ void screen(){
 
     Point pointA;
     Point pointB;
+    Point pointC;
 
-    int posicao1, posicao2;
+    int posicao1, posicao2, posicao3;
 
     vec4 aresta, aux;
 
@@ -162,6 +163,7 @@ void screen(){
 
         posicao1 = aresta[0];
         posicao2 = aresta[1];
+        posicao3 = aresta[2];
 
         aux = obterValor( &obj.vertex, posicao1 );
 
@@ -173,10 +175,16 @@ void screen(){
             pointB.x = round( aux[0] );
             pointB.y = round( aux[1] );
 
-            //printf("Ponto A = (%d, %d) \n", pointA.x, pointA.y);
+        aux = obterValor( &obj.vertex, posicao3 );
+
+            pointC.x = round( aux[0] );
+            pointC.y = round( aux[1] );
+
+           // printf("Ponto A = (%d, %d) \n", pointA.x, pointA.y);
             //printf("Ponto B = (%d, %d) \n", pointB.x, pointB.y);
 
-            drawLine(pointA, pointB);
+            drawTriangle(pointA, pointB, pointC, 0);
+            //drawLine(pointB, pointC);
     }
 
 }
@@ -188,7 +196,7 @@ void inicialize(){
     pX = 0, pY = 0, pZ = 5;     //posicao da camera
     lX = 0, lY = 0, lZ = 0;     //lookat da camera
     uX = 0, uY = 1, uZ = 0;     //up da camera
-    d_clip = 1;
+    d_clip = 3;
 
 }
 
