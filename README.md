@@ -195,7 +195,7 @@ M =
    0.00000   0.00000   0.00000   1.00000
 
 ```
-
+```
 M’ = R^-1 * S^-1 * T^-1;
 
 M’ =
@@ -206,44 +206,78 @@ M’ =
    0.00000   0.00000   0.00000   1.00000
 
 
-
+```
+```
 M’ * M = Matriz_Identidade
 
    1.00000   0.00000   0.00000   0.00000
    0.00000   1.00000  0.00000   0.00000
    0.00000   0.00000   1.00000   0.00000
    0.00000   0.00000   0.00000   1.00000
-
+```
 
 Perceba que as transformações inversas são a ordem contrária das transformações originais:
 
+```
+T^-1 =			S^-1 =				R^-1 =
 
-T -1 =
+   1   0   0  -X		1/X   0    0   0		1	  0   	  0   	   0
+   0   1   0  -Y		0    1/Y   0   0		0   	Cos(θ)   Sin(θ)    0
+   0   0   1  -Z		0     0   1/Z  0		0	-Sin(θ)  Cos(θ)    0
+   0   0   0   1		0     0    0   1		0	  0   	  0   	   1
+```
 
-   1   0   0  -X
-   0   1   0  -Y
-   0   0   1  -Z
-   0   0   0   1
-
-S -1 =
-
-   1/X   0   0   0
-   0   1/Y   0   0
-   0   0   1/Z   0
-   0   0   0   1
-
-A Rotação possui um caso especial, onde que para obter sua inversa basta calcular sua Transposta
+A Rotação possui um caso especial, onde que para obter sua inversa basta calcular sua transposta. O processo para se obter a rotação inversa nos eixos Y e Z são análogos.
 
 
-R -1 =
+## Espaço do Objeto
+  É o processo de importação do objeto que se deseja renderizar, este objeto pode ser projetado por softwares especializados como Blender e Maya. Cada objeto é composto por uma lista de vértices, lista de arestas e conjunto de matrizes de transformação.
+  A matriz deste espaço é chamada de MODEL.
+  
+  //Inserir Imagens de objetos em softwares como blender
+  
+  Vertices de um cubo 3D
+  ```C
+  	adicionaElemento( &vertex, { -1, -1, -1, 1 } );
+        adicionaElemento( &vertex, { -1, -1,  1, 1 } );
+        adicionaElemento( &vertex, {  1, -1, -1, 1 } );
+        adicionaElemento( &vertex, {  1, -1,  1, 1 } );
+        adicionaElemento( &vertex, { -1,  1, -1, 1 } );
+        adicionaElemento( &vertex, { -1,  1,  1, 1 } );
+        adicionaElemento( &vertex, {  1,  1, -1, 1 } );
+        adicionaElemento( &vertex, {  1,  1,  1, 1 } );
+  ```
+Lista de Arestas do Objeto
+  ```C
+//bottom					//top						// vert
+adicionaElemento( &aresta, { 0,1,0,0 } );	adicionaElemento( &aresta, { 4,5,0,0 } );	adicionaElemento( &aresta, { 0,4,0,0 } );
+adicionaElemento( &aresta, { 0,2,0,0 } );	adicionaElemento( &aresta, { 4,6,0,0 } );	adicionaElemento( &aresta, { 1,5,0,0 } );
+adicionaElemento( &aresta, { 1,3,0,0 } );	adicionaElemento( &aresta, { 5,7,0,0 } );	adicionaElemento( &aresta, { 2,6,0,0 } );
+adicionaElemento( &aresta, { 2,3,0,0 } );	adicionaElemento( &aresta, { 6,7,0,0 } );	adicionaElemento( &aresta, { 3,7,0,0 } );
+ 
+  ```
 
-   1	0   	  0   	    0
-   0   	Cos(θ)   Sin(θ)    0
-   0   	-Sin(θ)   Cos(θ)   0
-   0   	0   	  0   	    1
+No exemplo acima, os vértices do objeto sofrerão as transformações ao longo do pipeline e a lista de aresta serve para intrligar os vértices com linhas através dos algoritmos de rasterização.
 
+## Espaço do Universo
 
-//inserir rotação inversa em Y e Z
+  É o espaço em que a cena será criada, ele aloca cada objeto em sua devida posição através de transformações de rotação, escala e translação.
+  A matriz deste espaço é chamada de VIEW. As transformações e vértices do objeto são aplicadas nesta matriz.
+  
+  //Inserir imagens do espaço do universo, contidos no slide
+  
+## Espaço da Câmera
+
+  É o responsável por definir como a cena será visualizada, isto é possível porque os objetos são levados para o sistema de coordenadas da própria câmera.
+  
+  //Inserir as imagens com os diferentes modos de camera
+  
+  O objetivo de definir um espaço para a camera é especificar a posição e direção da cena que será renderizada.
+  
+  //Inserir imagem da camera retirada do wikipedia
+  
+  
+  
 
 
 ![Matriz-Grid](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/grids.png?raw=true)
