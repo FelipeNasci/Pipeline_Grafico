@@ -31,6 +31,8 @@ Glauber Ferreira Ângelo - 20160144357
   
   Todas as matrizes e vetores utilizadas no texto estão em 4 dimensões, onde os objetos são 3D e a 4ª coordenada é homogênea.
   
+  Para elaboração deste trabalho foi utilizada a biblioteca GLM para tratar as operações com matrizes
+  
 ## Pipeline Gráfico
 
   Em computação, o pipeline gráfico é um modelo conceitual que descreve todos os passos necessários para transformar uma cena 3D em 2D recebendo as coordenadas de tela. Denominamos cada etapa por “Espaço”, onde para da renderizar uma cena passamos por 6 espaços e cada um desempenha uma função específica.
@@ -43,7 +45,7 @@ Glauber Ferreira Ângelo - 20160144357
 
   Esta matriz de transformação aumenta ou diminui o tamanho do objeto.
   
-  //Inserir imagem das casinhas mostradas no slide
+  ![Escala](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/escala.PNG?raw=true)
   
  ```C
 escala	( sX, 0.0f, 0.0f, 0.0f,
@@ -70,7 +72,7 @@ sX ≠ sY;
 
   Escala de objetos fora da origem recebem uma translação implícita. Uma forma de contornar este problema é translada-lo para a origem, escalar e por fim translada-lo para o ponto incial.
   
-//EXIBIR IMAGENS DE ESCALA DE OBJETOS FORA DA ORIGEM CONTIDAS NO SLIDE
+  ![Escala-Fora-Origem](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/escala_fora_do_x.gif?raw=true)
 
 ### Espelhamento
 
@@ -226,32 +228,9 @@ A Rotação possui um caso especial, onde que para obter sua inversa basta calcu
   É o processo de importação do objeto que se deseja renderizar, este objeto pode ser projetado por softwares especializados como Blender e Maya. Cada objeto é composto por uma lista de vértices, lista de arestas e conjunto de matrizes de transformação.
   A matriz deste espaço é chamada de MODEL.
   
-  //Inserir Imagens de objetos em softwares como blender
+  ![Obj1](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20do%20Objeto/Objeto1.gif?raw=true)
   
-  Vertices de um cubo 3D
-  ```C
-  	adicionaElemento( &vertex, { -1, -1, -1, 1 } );
-        adicionaElemento( &vertex, { -1, -1,  1, 1 } );
-        adicionaElemento( &vertex, {  1, -1, -1, 1 } );
-        adicionaElemento( &vertex, {  1, -1,  1, 1 } );
-        adicionaElemento( &vertex, { -1,  1, -1, 1 } );
-        adicionaElemento( &vertex, { -1,  1,  1, 1 } );
-        adicionaElemento( &vertex, {  1,  1, -1, 1 } );
-        adicionaElemento( &vertex, {  1,  1,  1, 1 } );
-  ```
-
-Lista de Arestas do Objeto
-
-  ```C
-//bottom					//top						// vert
-adicionaElemento( &aresta, { 0,1,0,0 } );	adicionaElemento( &aresta, { 4,5,0,0 } );	adicionaElemento( &aresta, { 0,4,0,0 } );
-adicionaElemento( &aresta, { 0,2,0,0 } );	adicionaElemento( &aresta, { 4,6,0,0 } );	adicionaElemento( &aresta, { 1,5,0,0 } );
-adicionaElemento( &aresta, { 1,3,0,0 } );	adicionaElemento( &aresta, { 5,7,0,0 } );	adicionaElemento( &aresta, { 2,6,0,0 } );
-adicionaElemento( &aresta, { 2,3,0,0 } );	adicionaElemento( &aresta, { 6,7,0,0 } );	adicionaElemento( &aresta, { 3,7,0,0 } );
- 
-  ```
-
-No exemplo acima, os vértices do objeto sofrerão as transformações ao longo do pipeline e a lista de aresta serve para intrligar os vértices com linhas através dos algoritmos de rasterização.
+  No código fonte, localizado na classe Obj.cpp é possível localizar os vértices para um cubo, eles sofrerão as transformações ao longo do pipeline e serão interligados por uma lista de arestas.
 
 ## Espaço do Universo
 
@@ -264,11 +243,27 @@ No exemplo acima, os vértices do objeto sofrerão as transformações ao longo 
 
   É o responsável por definir como a cena será visualizada, isto é possível porque os objetos são levados para o sistema de coordenadas da própria câmera.
   
-  //Inserir as imagens com os diferentes modos de camera
+  ```
+  Câmera atrás do objeto
+  ```
   
-  O objetivo de definir um espaço para a camera é especificar a posição e direção da cena que será renderizada.
+  ![GTA1](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera1.gif?raw=true)
   
-  //Inserir imagem da camera retirada do wikipedia
+  ```
+  Câmera em 1ª pessoa
+  ```
+  
+  ![GTA2](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera2.gif?raw=true)
+  
+  ```
+  Câmera com visualização frontal do personagem
+  ```
+  
+  ![GTA3](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera3.gif?raw=true)
+  
+  O objetivo de definir um sistema de coordenadas para a camera é especificar a posição e direção da cena que será renderizada.
+  
+  ![space-Cam](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera4.gif?raw=true)
   
 ### Definindo a câmera
 
@@ -279,6 +274,7 @@ No exemplo acima, os vértices do objeto sofrerão as transformações ao longo 
     vec3 lookAt (lX,lY,lZ);                 //  Ponto para onde a camera esta olhando no universo.
     vec3 up (uX,uY,uZ);                     //  Indica qual a parte de cima da camera (geralmente eixo Y -> (0,1,0) ).
 ```
+
   Com estes parâmetros é possível identificar a direção da câmera, que é o ponto para onde ela está olhando em seu sistema de coordenadas.
 
 ```C++
@@ -291,6 +287,7 @@ No exemplo acima, os vértices do objeto sofrerão as transformações ao longo 
     vec3 xAux ( cross(   up, zAux ) / length( cross( up,zAux ) ) );	// Produto vetorial / norma de produto vetorial
     vec3 yAux ( cross( zAux, xAux ) );					// Produto vetorial
 ```
+
   Estes parâmetros definem o sistema de coordenadas da câmera, que é composta pela multiplicação entre uma matriz de rotação e uma translação.
   
 ```C++
@@ -317,7 +314,7 @@ No exemplo acima, os vértices do objeto sofrerão as transformações ao longo 
   Define a área que estará visível na tela através de um cubo definido de (-1,-1,-1) a (1,1,1), onde os objetos que estiverem dentro dele serão renderizados na tela.
   Este cubo também define a projeção dando a sensação de 3D deixando os objetos mais próximos da câmera maiores e os mais distantes menores.
   
-  //Inserir Imsgens e gifs do viewplane
+ ![viewPlane](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Clipping/clip1.png?raw=true)
   
 ## Espaço de Canônico
 
