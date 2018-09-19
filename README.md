@@ -46,7 +46,6 @@ Glauber Ferreira Ângelo - 20160144357
   Esta matriz de transformação aumenta ou diminui o tamanho do objeto.
   
   ![Escala](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/escala.PNG?raw=true)
-  //Inserir imagem das casinhas mostradas no slide
   
  ```C
 escala	( sX, 0.0f, 0.0f, 0.0f,
@@ -73,7 +72,7 @@ sX ≠ sY;
 
   Escala de objetos fora da origem recebem uma translação implícita. Uma forma de contornar este problema é translada-lo para a origem, escalar e por fim translada-lo para o ponto incial.
   
-//EXIBIR IMAGENS DE ESCALA DE OBJETOS FORA DA ORIGEM CONTIDAS NO SLIDE
+  ![Escala-Fora-Origem](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/escala_fora_do_x.gif?raw=true)
 
 ### Espelhamento
 
@@ -229,7 +228,7 @@ A Rotação possui um caso especial, onde que para obter sua inversa basta calcu
   É o processo de importação do objeto que se deseja renderizar, este objeto pode ser projetado por softwares especializados como Blender e Maya. Cada objeto é composto por uma lista de vértices, lista de arestas e conjunto de matrizes de transformação.
   A matriz deste espaço é chamada de MODEL.
   
-  //Inserir Imagens de objetos em softwares como blender
+  ![Obj1](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20do%20Objeto/Objeto1.gif?raw=true)
   
   Vertices de um cubo 3D
   ```C
@@ -267,11 +266,25 @@ No exemplo acima, os vértices do objeto sofrerão as transformações ao longo 
 
   É o responsável por definir como a cena será visualizada, isto é possível porque os objetos são levados para o sistema de coordenadas da própria câmera.
   
-  //Inserir as imagens com os diferentes modos de camera
+  ```
+  Câmera atrás do objeto
+  ```
+  
+  ![GTA1](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera1.gif?raw=true)
+  
+  ```
+  Câmera em 1ª pessoa
+  ```
+  ![GTA2](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera2.gif?raw=true)
+  
+  ```
+  Câmera na visualizando o personagem de frente
+  ```
+  ![GTA3](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera3.gif?raw=true)
   
   O objetivo de definir um espaço para a camera é especificar a posição e direção da cena que será renderizada.
   
-  //Inserir imagem da camera retirada do wikipedia
+  ![space-Cam](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera4.gif?raw=true)
   
 ### Definindo a câmera
 
