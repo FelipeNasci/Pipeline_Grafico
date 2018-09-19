@@ -211,7 +211,7 @@ M’ =
 M’ * M = Matriz_Identidade
 
    1.00000   0.00000   0.00000   0.00000
-   0.00000   1.00000  0.00000   0.00000
+   0.00000   1.00000   0.00000   0.00000
    0.00000   0.00000   1.00000   0.00000
    0.00000   0.00000   0.00000   1.00000
 ```
@@ -247,7 +247,9 @@ A Rotação possui um caso especial, onde que para obter sua inversa basta calcu
         adicionaElemento( &vertex, {  1,  1, -1, 1 } );
         adicionaElemento( &vertex, {  1,  1,  1, 1 } );
   ```
+
 Lista de Arestas do Objeto
+
   ```C
 //bottom					//top						// vert
 adicionaElemento( &aresta, { 0,1,0,0 } );	adicionaElemento( &aresta, { 4,5,0,0 } );	adicionaElemento( &aresta, { 0,4,0,0 } );
@@ -276,7 +278,46 @@ No exemplo acima, os vértices do objeto sofrerão as transformações ao longo 
   
   //Inserir imagem da camera retirada do wikipedia
   
+### Definindo a câmera
+
+  A camera possui básicamente 03 vetores como parâmeros:
+
+```C++
+    vec3 position (pX, pY, pZ);             //  Posicao da camera no universo.
+    vec3 lookAt (lX,lY,lZ);                 //  Ponto para onde a camera esta olhando no universo.
+    vec3 up (uX,uY,uZ);                     //  Indica qual a parte de cima da camera (geralmente eixo Y -> (0,1,0) ).
+```
+  Com estes parâmetros é possível identificar a direção da câmera, que é o ponto para onde ela está olhando em seu sistema de coordenadas.
+
+```C++
+    vec3 direction ( lookAt - position );   //  Para onde a camera esta olhando no espaço da câmera
+```
+```C++
+    //auxilia no calculo da base
+    vec3 zAux ( -(direction) / length(direction) );                 	// Normalizando vetor de direcao
+    vec3 xAux ( cross(   up, zAux ) / length( cross( up,zAux ) ) );	// Produto vetorial / norma de produto vetorial
+    vec3 yAux ( cross( zAux, xAux ) );					// Produto vetorial
+```
+  Estes parâmetros definem o sistema de coordenadas da câmera, que é composta pela multiplicação entre uma matriz de rotação e uma translação.
   
+```C++
+    ///Base da Camera
+    vec4 Xc ( xAux , 0 );
+    vec4 Yc ( yAux , 0 );
+    vec4 Zc ( zAux , 0 );
+
+    mat4 Bt (Xc,
+             Yc,
+             Zc,
+             homogenious);
+
+    mat4 T( 1, 0, 0, -position[0],
+            0, 1, 0, -position[1],
+            0, 0, 1, -position[2],
+            0, 0, 0, 1);
+
+    mat4 M_view ( T * Bt );		// Sistema de coordenadas da Câmera
+```  
   
 
 
