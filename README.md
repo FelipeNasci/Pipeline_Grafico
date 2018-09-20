@@ -6,15 +6,19 @@ Diego Felipe Gonçalves do Nascimento - 20170171680
 
 Danillo Medeiros Moraes Batista - 20160164313
 
-### [Introdução](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#introdu%C3%A7%C3%A3o)
+### [Introdução](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#introdu%C3%A7%C3%A3o-1)
 
-### [Transformações Geométricas](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#rasteriza%C3%A7%C3%A3o-de-linhas-1)
+### [Transformações Geométricas](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#transforma%C3%A7%C3%B5es-geom%C3%A9tricas-1)
 
-### [Resultados](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#resultados-1)
+### [Pipeline Gráfico](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#espa%C3%A7o-do-objeto)
 
-### [Problemas encontrados](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#problemas-encontrados-1)
+### [Resultados](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#resultados-1)
 
-### [Referências](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#refer%C3%AAncias-1)
+### [Problemas encontrados](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#problemas-encontrados-1)
+
+### [Rasterização de Linhas](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md)
+
+### [Referências](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/README.md#refer%C3%AAncias-1)
 
 # Introdução
   
@@ -306,15 +310,19 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
 
 # Resultados
 
-Após implementar todo o processo do pipeline gráfico,chegamos ao seguinte resultado carregando um .obj fornecido pelo professor:
-
-
+```
+Escala Isotrópica
+```
+https://youtu.be/L5CahEZfVvo
 
 # Problemas encontrados
 
+  Problemas na operação de matrizes com a biblioteca GLM pois ela utiliza vetores linha;
+  Problemas ao calcular o espaço da câmera, existem muitas funções;
+  
 # Referências
-https://en.wikipedia.org/wiki/Graphics_pipeline
+[Graphics_Pipeline](https://en.wikipedia.org/wiki/Graphics_pipeline)
 
-https://mundoeducacao.bol.uol.com.br/matematica/matriz-determinantes.htm
+[Mundo Educação](https://mundoeducacao.bol.uol.com.br/matematica/matriz-determinantes.htm)
 
 *Materiais disponíveis pelo professor e blogs de outros alunos
