@@ -16,8 +16,8 @@ using namespace std;
         carregaVertece();
         carregaAresta();
 
-        cubo();
-        //monkey();
+        //cubo();
+        monkey();
     }
 
     ///Variaveis
