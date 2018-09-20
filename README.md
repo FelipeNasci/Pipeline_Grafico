@@ -202,7 +202,7 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
   É o responsável por definir como a cena será visualizada, isto é possível porque os objetos são levados para o sistema de coordenadas da própria câmera.
   
   ```
-  Câmera atrás do objeto
+  Câmera atrás do objeto,"3ª pessoa".
   ```
   
   ![GTA1](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera1.gif?raw=true)
@@ -213,19 +213,10 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
   
   ![GTA2](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera2.gif?raw=true)
   
-  ```
-  Câmera com visualização frontal do personagem
-  ```
-  
-  ![GTA3](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera3.gif?raw=true)
-  
-  O objetivo de definir um sistema de coordenadas para a camera é especificar a posição e direção da cena que será renderizada.
-  
-  ![space-Cam](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera4.gif?raw=true)
   
 ### Definindo a câmera
 
-  A camera possui básicamente 03 vetores como parâmeros:
+  A camera possui básicamente três vetores como parâmeros: o lookAt define pra onde a câmera esta "olhando", um up que consiste numa movimentaçao linear e sua posição no universo.
 
 ```C++
     vec3 position (pX, pY, pZ);             //  Posicao da camera no universo.
@@ -270,7 +261,7 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
 ## Espaço de Recorte
 
   Define a área que estará visível na tela através de um cubo definido de (-1,-1,-1) a (1,1,1), onde os objetos que estiverem dentro dele serão renderizados na tela.
-  Este cubo também define a projeção dando a sensação de 3D deixando os objetos mais próximos da câmera maiores e os mais distantes menores.
+  Este cubo também define a projeção perspectiva dando a sensação de 3D deixando os objetos mais próximos da câmera maiores e os mais distantes menores.
   
  ![viewPlane](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Clipping/clip1.png?raw=true)
   
@@ -318,3 +309,8 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
 # Problemas encontrados
 
 # Referências
+https://en.wikipedia.org/wiki/Graphics_pipeline
+
+https://mundoeducacao.bol.uol.com.br/matematica/matriz-determinantes.htm
+
+*Materiais disponíveis pelo professor e blogs de outros alunos
