@@ -178,7 +178,7 @@ M =
 ```
 
 Nota: Podem ocorrer situações em que ao aplicarmos uma transformação em um objeto, surja a necessidade de voltar para o estado anterior.
-Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas na ordem oposta que foi aplicada na matriz original. 
+Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas na ordem oposta que foi utilizada na matriz original. 
   
 
 ## Espaço do Objeto
