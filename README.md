@@ -311,9 +311,17 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
 # Resultados
 
 ```
-Escala Isotrópica
+[Escala Isotrópica](https://youtu.be/L5CahEZfVvo)
+
+[Escala Anisotrópica](https://www.youtube.com/watch?v=SUaNquneizw&feature=youtu.be)
+
+[Rotação em X Y Z](https://www.youtube.com/watch?v=aslIFlS6HCI&index=6&list=UUKpVNRxmWwYfrVPOBd8Cm9g)
+
+[Rotação no eiox X](https://www.youtube.com/watch?v=Q0UXOgh17ZQ&feature=youtu.be)
+
+[Rotação no eiox Y](https://www.youtube.com/watch?v=E7mmVW2gaWs&feature=youtu.be)
+
 ```
-https://youtu.be/L5CahEZfVvo
 
 # Problemas encontrados
 
