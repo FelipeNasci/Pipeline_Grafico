@@ -18,7 +18,7 @@ Danillo Medeiros Moraes Batista - 20160164313
 
 ### [Rasterização de Linhas](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md)
 
-### [Referências](https://en.wikipedia.org/wiki/Graphics_pipeline)
+### [Referências](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/README.md#refer%C3%AAncias-1)
 
 # Introdução
   
@@ -319,8 +319,8 @@ https://youtu.be/L5CahEZfVvo
 # Problemas encontrados
 
 # Referências
-https://en.wikipedia.org/wiki/Graphics_pipeline
+[Graphics_Pipeline](https://en.wikipedia.org/wiki/Graphics_pipeline)
 
-https://mundoeducacao.bol.uol.com.br/matematica/matriz-determinantes.htm
+[Mundo Educação](https://mundoeducacao.bol.uol.com.br/matematica/matriz-determinantes.htm)
 
 *Materiais disponíveis pelo professor e blogs de outros alunos
