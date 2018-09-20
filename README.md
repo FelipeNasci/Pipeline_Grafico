@@ -71,19 +71,16 @@ sX ≠ sY;
 
 ![iso_ani](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Escala_Iso_Ani.jpg?raw=true)
 
-  Escala de objetos fora da origem recebem uma translação implícita. Uma forma de contornar este problema é translada-lo para a origem, escalar e por fim translada-lo para o ponto incial.
-  
-  ![Escala-Fora-Origem](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/escala_fora_do_x.gif?raw=true)
 
 ### Espelhamento
 
-  O espelhamento é realizado por uma matriz de escala com valor = -1 no eixo em que se deseja espelhar (x,y,z). Nos casos em que se deseja espelhar e modificar o tamanho do objeto basta multiplicá-lo pelo valor de escala negativo.
+  O espelhamento é realizado por uma matriz de escala com valor = -1, aplicada no eixo em que se deseja espelhar (x,y,z).
 
 ![Mirror](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Espelhamento.PNG?raw=true)
 
 ### Rotação
 
-  É o movimento giratório em torno dos eixos fixados. no openGL a rotação por padrão é no sentido anti-horário, porém para rotacionar no sentido inverso basta aplicar uma angulação oposta ao ângulo desejado.
+  Consiste em girar o objeto em torno dos eixos fixados. No openGL a rotação por padrão é no sentido anti-horário, porém para rotacionar no sentido inverso, basta aplicar uma angulação oposta ao ângulo desejado.
   
   Rotação em torno do eixo X
    
@@ -116,11 +113,11 @@ rotateZ   (cos(rZ),   -sin(rZ),    0,  0,
   
 ### Shear
 
-  Esta transformação fixa um conjunto de vértices em um ponto e translada o restante.
+  Esta transformação fornece uma maneira alternativa de alterar a forma do objeto,mantém uma coordenada U fixa e altera uma coordenada V  ao longo do eixo.
 
 ![shear](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/shear.PNG?raw=true)
   
-  Toda matriz com diagonal principal igual a “1”  e o restante diferente de 1’s é uma matriz de shear. As API’s gráficas não implementam o shear, o mesmo é obtido através de transformações de rotação e escala.
+  As API’s gráficas geralmente não implementam o shear, o mesmo pode ser obtido através de transformações de escala e rotação.
   
   ![shear2](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/shear2.PNG?raw=true)
 
@@ -130,7 +127,7 @@ rotateZ   (cos(rZ),   -sin(rZ),    0,  0,
   
   ![translacao](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Transla%C3%A7%C3%A3o.gif?raw=true)
   
-  Não é possível obter uma matriz de translação sem a utilização de coordenadas homogênias.
+  Não é possível obter uma matriz de translação sem utilizar coordenadas homogênias.
   
 ```C
 translacao (1.0f, 0.0f, 0.0f, tX,
@@ -143,7 +140,7 @@ translacao (1.0f, 0.0f, 0.0f, tX,
 
   Podemos utilizar todas as transformações desejadas em uma única matriz correspondente, esta prática reduz drasticamente o número de operações, pois não é preciso multiplicar a cada frame várias matrizes para obter uma transformação, este processo é executado apenas uma vez.
   Ex: Seja: 
-  T uma matriz de translação; S uma matriz de escala;  R uma matriz de rotação no eixo “x”;  M será uma matriz de composta por estas transformações respectivamente
+  T uma matriz de translação; S uma matriz de escala;  R uma matriz de rotação no eixo “x”;  M será uma matriz composta por estas transformações respectivamente
   
 ```
   T =				S =				R =
@@ -180,55 +177,9 @@ M =
 
 ```
 
-### Transformações inversas
-
-  Podem ocorrer situações em que ao aplicarmos uma transformação em um objeto tenhamos a necessidade de voltar para o estado anterior.
-  Suponha que após aplicamos as transformações de Rotação, Escala e Translação (nesta ordem) em M e necessitamos retornar para o ponto de origem. Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas na ordem oposta a aplicada na matriz original. Podemos fazer uma analogia com uma pilha
+Nota: Podem ocorrer situações em que ao aplicarmos uma transformação em um objeto, surja a necessidade de voltar para o estado anterior.
+Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas na ordem oposta que foi aplicada na matriz original. 
   
-```
-Seja M = T * E * R;
-
-M =
-
-   2.00000   0.00000   0.00000   5.00000
-   0.00000   1.57597  -2.55271   3.00000
-   0.00000   0.85090   0.52532   2.00000
-   0.00000   0.00000   0.00000   1.00000
-```
-
-```
-M’ = R^-1 * S^-1 * T^-1;
-
-M’ =
-
-   0.50000   0.00000   0.00000  -2.50000
-   0.00000   0.17511   0.85090  -2.22713
-   0.00000  -0.28363   0.52532  -0.19974
-   0.00000   0.00000   0.00000   1.00000
-```
-
-```
-M’ * M = Matriz_Identidade
-
-   1.00000   0.00000   0.00000   0.00000
-   0.00000   1.00000   0.00000   0.00000
-   0.00000   0.00000   1.00000   0.00000
-   0.00000   0.00000   0.00000   1.00000
-```
-
-Perceba que as transformações inversas são a ordem contrária das transformações originais:
-
-```
-T^-1 =			S^-1 =				R^-1 =
-
-   1   0   0  -X		1/X   0    0   0		1	  0   	  0   	   0
-   0   1   0  -Y		0    1/Y   0   0		0   	Cos(θ)   Sin(θ)    0
-   0   0   1  -Z		0     0   1/Z  0		0	-Sin(θ)  Cos(θ)    0
-   0   0   0   1		0     0    0   1		0	  0   	  0   	   1
-```
-
-A Rotação possui um caso especial, onde que para obter sua inversa basta calcular sua transposta. O processo para se obter a rotação inversa nos eixos Y e Z são análogos.
-
 
 ## Espaço do Objeto
 
