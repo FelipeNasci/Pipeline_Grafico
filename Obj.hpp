@@ -29,6 +29,10 @@ private:
 
     void carregaAresta();
 
+    void cubo();
+
+    void monkey();
+
 };
 
 #endif // OBJ_H

@@ -1,320 +1,334 @@
-# T1 ICG - Rasterização de Linhas
+# T2 ICG - Etapas do Pipeline Gráfico
 
 ## Participantes
 
 Diego Felipe Gonçalves do Nascimento - 20170171680
 
-Glauber Ferreira Ângelo - 20160144357
+Danillo Medeiros Moraes Batista - 20160164313
 
-### [Introdução](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#introdu%C3%A7%C3%A3o)
+### [Introdução](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#introdu%C3%A7%C3%A3o-1)
 
-### [Rasterização de linhas](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#rasteriza%C3%A7%C3%A3o-de-linhas-1)
+### [Transformações Geométricas](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#transforma%C3%A7%C3%B5es-geom%C3%A9tricas-1)
 
-### [Resultados](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#resultados-1)
+### [Pipeline Gráfico](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#espa%C3%A7o-do-objeto)
 
-### [Problemas encontrados](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#problemas-encontrados-1)
+### [Resultados](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#resultados-1)
 
-### [Referências](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md#refer%C3%AAncias-1)
+### [Problemas encontrados](https://github.com/FelipeNasci/Pipeline_Grafico/tree/Texto_T2-ICG#problemas-encontrados-1)
+
+### [Rasterização de Linhas](https://github.com/FelipeNasci/Line_Rasterization/blob/master/README.md)
+
+### [Referências](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/README.md#refer%C3%AAncias-1)
 
 # Introdução
-
-  Este trabalho tem como objetivo apresentar alguns algoritmos para rasterização de linhas em um monitor gráfico diretamente e memória de video, como os sistemas operacionais modernos impedem acesso direto a memória de vídeo, foi utilizado um framework para realizar esta simulação.
-
-  Mas antes, devemos conhecer alguns conceitos como: primitivas, rasterização, como rasterizar primitivas gráficas e o funcionamento em um monitor gráfico.
   
-## Rasterização
-
-  Primitivas em computação gráfica são elementos básicos, como pontos e retas. A rasterização é responsável por capturar estas primitivas e transformá-las em novas imagens, ou seja, é justamente o que acontece em monitores, displays, e até mesmo impressoras.
-
-## Monitores
-
-  Inicialmente devemos imaginar o display como uma matriz _(grid)_ bidimensional, composto por **_m linhas_** e **_n colunas_**, onde no centro de cada posição da matriz existe um ponto com um par de coordenadas _(x,y)_. 
+  Este é o segundo trabalho de computação gráfica e tem como objetivo apresentar um processo conhecido como "pipeline gráfico", sua definição será desenvolvida mais adiante.
   
-  
-![Matriz-Grid](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/grids.png?raw=true)
+## Considerações iniciais
 
+  Para um melhor entendimento deste texto, é necessário o conhecimento sobre coordenadas homogênea e operacões entre matrizes e vetores.
+  
+  Os vetores apresentados no texto serão do tipo coluna;
+  
+  Os vetores contidos nas matrizes serão do tipo linha;
+  
+  Todas as matrizes e vetores utilizadas no texto estão em 4 dimensões, onde os objetos são 3D e a 4ª coordenada é homogênea.
+  
+  Para tratar as operações com matrizes foi utilizada a biblioteca GLM. 
+  
+## Pipeline Gráfico
 
-  Note, nas figuras acima o Ponto _(0,0)_ está situado no topo a esquerda, e o Ponto _(m-1, n-1)_ está posicionado no canto inferior direito. Assim estão dispostos os pontos em um display.
+  Em computação, o pipeline gráfico é um modelo conceitual que descreve todos os passos necessários para transformar valores matemáticos  de uma cena 3D em um descrição 2D, para assim poder ser exibido em uma tela. Denominamos cada etapa por “Espaço”, onde para da renderizar uma cena passamos por 6 espaços e cada um desempenha uma função específica.
   
-  Outro fato a se observar é que a figura "Grid - 2" é uma abstração de "Grid - 1", e esta servirá de modelo para os próximos exemplos.
+  ![pipeline](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Pipeline/pipelne.PNG?raw=true)
   
-## Pixel
+## Transformações Geométricas
 
-  Um Pixel é um ponto luminoso no monitor, uma imagem é formanda a partir de um conjunto de pixels. 
+  Ao longo do pipeline gráfico, são executadas uma série de transformações que na realidade são apenas operações entre matrizes e vetores, a seguir veremos as transformações mais utilizadas neste processo.
   
-  É composto por três canais de cores - Vermelho, Verde e Azul, e mais um canal para tratar a transparência destas cores, chamamos este canal de alpha, compondo um sistema chamado RGBA.
-  
-  
-  ![Disposição_Pixel](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Disposi%C3%A7%C3%A3o_Pixel.png?raw=true)
-  
-  Para uma melhor clareza de código, foram utilizadas 02 estruturas:
+### Escala
 
-* Define a intensidade das cores, onde 0 significa ausência de cor e 255 a intensidade máxima
-
-```C
-typedef struct Color
-{   //INTENSIDADE DAS CORES
-    int r = 255;
-    int g = 255;
-    int b = 255;
-    int a = 0;
-} Color;
+  Esta matriz aumenta ou diminui o tamanho do objeto.
+  
+  ![Escala](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/escala.PNG?raw=true)
+  
+ ```C
+escala	( sX, 0.0f, 0.0f, 0.0f,
+	0.0f,   sY, 0.0f, 0.0f,
+	0.0f, 0.0f,   sZ, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f );
 ```
 
-* Define um pixel na tela, possui coordenadas _(x,y)_ e uma _cor_
+  A escala em um objeto possui 02 tipos:
+
+  Isotrópica: Quando todos os eixos recebem o mesmo valor de escala
+
+```
+sX = sY;
+```
+
+  Anisotrópica: Quando os eixos recebem valores de escala diferentes
+  
+```
+sX ≠ sY;
+```
+
+![iso_ani](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Escala_Iso_Ani.jpg?raw=true)
+
+
+### Espelhamento
+
+  O espelhamento é realizado por uma matriz de escala com valor = -1, aplicada no eixo em que se deseja espelhar (x,y,z).
+
+![Mirror](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Espelhamento.PNG?raw=true)
+
+### Rotação
+
+  Consiste em girar o objeto em torno dos eixos fixados. No openGL a rotação por padrão é no sentido anti-horário, porém para rotacionar no sentido inverso, basta aplicar uma angulação oposta ao ângulo desejado.
+  
+  Rotação em torno do eixo X
+   
+```C
+rotateX   (1,  0,          0,          0,
+	   0,  cos(rX),    -sin(rX),   0,
+	   0,  sin(rX),    cos(rX),    0,
+           0,  0,          0,          1 );
+```
+
+Rotação em torno do eixo Y
 
 ```C
-typedef struct Point
-{
-    int x;
-    int y;
+rotateY   (cos(rY),    0,  sin(rY),    0,
+           0,          1,  0,          0,
+           -sin(rY),   0,  cos(rY),    0,
+           0,          0,  0,          1 );
+```
 
-    struct Color color;
+Rotação em torno do eixo Z
 
-} Point;
+````C
+rotateZ   (cos(rZ),   -sin(rZ),    0,  0,
+	   sin(rZ),    cos(rZ),    0,  0,
+	   0,          0,          1,  0,
+	   0,          0,          0,  1 );
+````
+  
+  Rotações fora da origem geram uma translação implícita
+  
+### Shear
+
+  Esta transformação fornece uma maneira alternativa de alterar a forma do objeto,mantém uma coordenada U fixa e altera uma coordenada V  ao longo do eixo.
+
+![shear](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/shear.PNG?raw=true)
+  
+  As API’s gráficas geralmente não implementam o shear, o mesmo pode ser obtido através de transformações de escala e rotação.
+  
+  ![shear2](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/shear2.PNG?raw=true)
+
+### Translação
+  
+  A translação é o movimento que um objeto faz de um ponto a outro. Basicamente somamos o valor de translação a coordenada correspondente do objeto a ser transladado.
+  
+  ![translacao](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/Transla%C3%A7%C3%A3o.gif?raw=true)
+  
+  Não é possível obter uma matriz de translação sem utilizar coordenadas homogênias.
+  
+```C
+translacao (1.0f, 0.0f, 0.0f, tX,
+	    0.0f, 1.0f, 0.0f, tY,
+	    0.0f, 0.0f, 1.0f, tZ,
+	    0.0f, 0.0f, 0.0f, 1.0f );
+```
+
+### Composição de matrizes
+
+  Podemos utilizar todas as transformações desejadas em uma única matriz correspondente, esta prática reduz drasticamente o número de operações, pois não é preciso multiplicar a cada frame várias matrizes para obter uma transformação, este processo é executado apenas uma vez.
+  Ex: Seja: 
+  T uma matriz de translação; S uma matriz de escala;  R uma matriz de rotação no eixo “x”;  M será uma matriz composta por estas transformações respectivamente
+  
+```
+  T =				S =				R =
+
+	1   0   0   5			2   0   0   0			1	0   	  0   	    0
+	0   1   0   3			0   3   0   0			0   	Cos(45)  -Sin(45)   0
+	0   0   1   2 			0   0   1   0			0   	Sin(45)   Cos(45)   0
+	0   0   0   1			0   0   0   1			0   	0   	  0   	    1
+```
+
+```
+  M = R * S * T
+  
+M =
+
+    2.00000    0.00000    0.00000   10.00000
+    0.00000    1.57597   -0.85090    3.02609
+    0.00000    2.55271    0.52532    8.70878
+    0.00000    0.00000    0.00000    1.00000
+
+```
+
+  Caso a ordem com que as matrizes sejam multiplicadas mude, o resultado será diferente
+  
+```
+  M = T * S * R
+
+M =
+
+   2.00000   0.00000   0.00000   5.00000
+   0.00000   1.57597  -2.55271   3.00000
+   0.00000   0.85090   0.52532   2.00000
+   0.00000   0.00000   0.00000   1.00000
+
+```
+
+Nota: Podem ocorrer situações em que ao aplicarmos uma transformação em um objeto, surja a necessidade de voltar para o estado anterior.
+Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas na ordem oposta que foi utilizada na matriz original. 
+  
+
+## Espaço do Objeto
+
+  É o processo de importação do objeto que se deseja renderizar, este objeto pode ser projetado por softwares especializados como Blender e Maya. Cada objeto é composto por uma lista de vértices, lista de arestas e conjunto de matrizes de transformação.
+  A matriz deste espaço é chamada de MODEL.
+  
+  ![Obj1](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20do%20Objeto/Objeto1.gif?raw=true)
+  
+  No código fonte, localizado na classe Obj.cpp é possível localizar os vértices para um cubo, eles sofrerão as transformações ao longo do pipeline e serão interligados por uma lista de arestas.
+
+## Espaço do Universo
+
+  É o espaço em que a cena será criada, ele aloca cada objeto em sua devida posição através de transformações de rotação, escala e translação.
+  A matriz deste espaço é chamada de VIEW. As transformações e vértices do objeto são aplicadas nesta matriz.
+  
+  ![Universe](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Universo/space_uni.PNG?raw=true)
+  
+## Espaço da Câmera
+
+  É o responsável por definir como a cena será visualizada, isto é possível porque os objetos são levados para o sistema de coordenadas da própria câmera.
+  
+  ```
+  Câmera atrás do objeto,"3ª pessoa".
   ```
   
-  Estas cores são armazenadas em uma região de memória chamada _Color_Buffer_ , que é responsável por armazenar informações da imagem que será rasterizada na tela.
+  ![GTA1](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera1.gif?raw=true)
+  
+  ```
+  Câmera em 1ª pessoa
+  ```
+  
+  ![GTA2](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Espa%C3%A7o%20da%20Camera/Camera2.gif?raw=true)
   
   
-  ![ColorBuffer](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/ColorBuffer.png?raw=true)
+### Definindo a câmera
+
+  A camera possui básicamente três vetores como parâmeros: o lookAt define pra onde a câmera esta "olhando", um up que consiste numa movimentaçao linear e sua posição no universo.
+
+```C++
+    vec3 position (pX, pY, pZ);             //  Posicao da camera no universo.
+    vec3 lookAt (lX,lY,lZ);                 //  Ponto para onde a camera esta olhando no universo.
+    vec3 up (uX,uY,uZ);                     //  Indica qual a parte de cima da camera (geralmente eixo Y -> (0,1,0) ).
+```
+
+  Com estes parâmetros é possível identificar a direção da câmera, que é o ponto para onde ela está olhando em seu sistema de coordenadas.
+
+```C++
+    vec3 direction ( lookAt - position );   //  Para onde a camera esta olhando no espaço da câmera
+```
+
+```C++
+    //auxilia no calculo da base
+    vec3 zAux ( -(direction) / length(direction) );                 	// Normalizando vetor de direcao
+    vec3 xAux ( cross(   up, zAux ) / length( cross( up,zAux ) ) );	// Produto vetorial / norma de produto vetorial
+    vec3 yAux ( cross( zAux, xAux ) );					// Produto vetorial
+```
+
+  Estes parâmetros definem o sistema de coordenadas da câmera, que é composta pela multiplicação entre uma matriz de rotação e uma translação.
+  
+```C++
+    ///Base da Camera
+    vec4 Xc ( xAux , 0 );
+    vec4 Yc ( yAux , 0 );
+    vec4 Zc ( zAux , 0 );
+
+    mat4 Bt (Xc,
+             Yc,
+             Zc,
+             homogenious);
+
+    mat4 T( 1, 0, 0, -position[0],
+            0, 1, 0, -position[1],
+            0, 0, 1, -position[2],
+            0, 0, 0, 1);
+
+    mat4 M_view ( T * Bt );		// Sistema de coordenadas da Câmera
+```  
+
+## Espaço de Recorte
+
+  Define a área que estará visível na tela através de um cubo definido de (-1,-1,-1) a (1,1,1), onde os objetos que estiverem dentro dele serão renderizados na tela.
+  Este cubo também define a projeção perspectiva dando a sensação de 3D deixando os objetos mais próximos da câmera maiores e os mais distantes menores.
+  
+ ![viewPlane](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Clipping/clip1.png?raw=true)
+  
+## Espaço de Canônico
+
+  Esta é a etapa de desomogeneização, é o único processo do pipeline que não pode ser realizado por multiplicação de matrizes.
+  
+  Após os vértices do objeto sofrerem todas as modificações dos espaços anteriores, a coordenada homogênia é modificada, neste espaço dividimos todos os vértices por esta coordenada.
+  
+  Esta etapa do pipeline pode ser pulada e realizada no fim de todas as outras transformações.
+
+## Espaço de Tela
+  
+  A função deste espaço é obter os vértices do objetos em coordenadas de tela. A matriz deste espaço é uma composição de 03 transformações: Escala, Translação e Escala
+  
+  ```C
+    GLfloat w = (IMAGE_WIDTH - 1)/2 ;
+    GLfloat h = (IMAGE_HEIGHT - 1)/2 ;
+
+    mat4 S1 (1, 0,  0, 0,	mat4 T2 (1, 0, 0, 1,		mat4 S2 (w, 0, 0, 0,
+             0, -1, 0, 0,		 0, 1, 0, 1,			 0, h, 0, 0,
+             0, 0,  1, 0,		 0, 0, 1, 0,			 0, 0, 1, 0,
+             0, 0,  0, 1 );		 0, 0, 0, 1 );			 0, 0, 0, 1 );
+
+    mat4 M_viewPort( S1 * T2 * S2 );
+  ```
+  
+  neste espaço também é empregado a rasterização das primitivas.
   
   
-  _OBS: Caso o computador não possua uma placa de vídeo dedicada, o Color_Buffer utiliza parte da memória RAM._
+## Pipeline
   
-  
-  ![ColorBuffer](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/ColorBuffer2.png?raw=true)
-  
-
-  Tendo em vista que o _Color_Buffer_ é uma região de memória, e a única informação que temos são pontos de coordenadas, utilizamos uma função _offset_ para encontrar a informação para determinada coordenada do monitor.
-
-````C
-offset = 4 * (x + y * IMAGE_WIDTH);
-````
-
-_**OBS:** O _offset_ encontra a posição de memória de determinado ponto _(x,y)_ , para que seja selecionada uma cor se faz necessário acessar os canais correspondente a cor desejada e informar sua intensidade (0 até 255), como é demonstrado na função putPixel()._
-
-````C
-void putPixel(Point point)
-{
-    FBptr[offset(point) + RED] = point.color.r;		  	//RED   == 0
-    FBptr[offset(point) + GREEN] = point.color.g;		//GREEN == 1
-    FBptr[offset(point) + BLUE] = point.color.b;		//BLUE  == 2
-    FBptr[offset(point) + ALPHA] = point.color.a;		//ALPHA == 3
-}
-````
-
-# Rasterização de linhas
-
-Após entender a interação entre monitores e computadores, os algoritmos para traçar retas serão entendidos sem maiores dificuldades.
-
-Antes de iniciar, assumimos que:
-
-* Δx ≥ Δy, ou seja, 0 <= angulo_reta <= 1
-* Nosso grid tem apenas coordenadas positivas (maior ou igual a 0)
-* P(x0,y0) = (0,0)
-* A distância entre cada pixel é 1
-
-Note que retas que possuem ângulos iguais a 0°, 45° e 90° são triviais de serem rasterizados.
-
-
-![angulos_triviais](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Pixel%20angulos%200%2090%2045.jpg?raw=true)
-
-
-Porém, retas com angulações diferentes demandam um maior esforço para serem desenhadas. A seguir são demonstrados alguns algoritmos para realizar esta tarefa.
-
-### Equação geral da reta
-
-Podemos representar uma reta _r_ do plano cartesiano por meio de uma equação. Essa equação pode ser obtida a partir de um ponto A(xA, yA) e do coeficiente angular _m_ dessa reta.
-
-Considere uma reta r não-vertical, de coeficiente angular m, que passa pelo ponto A(xA, yA). Vamos obter a equação dessa reta, tomando um ponto _P(x, y)_ tal que P ≠ A.
-
-Este é o meio mais trivial de se obter uma reta através de dois pontos. Vajamos a seguir seu desenvolvimento.
-
-````
-y - y0 = m * (x - x0)  
-y - y0 = (m * x) + (-m * x0)
-     y = (m * x) + (-m * x0)  + y0
-     y = (m * x) + [ (-m * x0)  + y0 ]
-     y = m * x + b
-````
-
-
-![Eq_Geral_Reta](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Equa%C3%A7%C3%A3o%20Geral.png?raw=true)
-
-
-Através desta equação podemos encontrar qualquer reta.
-OBS: _Devemos nos atentar nos casos em que:_
-
-````
-Δx = 0 (pois inviabiliza a divisão Δy/Δx).
-Δx > Δx, isso nos obriga a trocar o valor dos pontos.
-````
-
-A equação geral da reta é ineficiente em meios computacionais pois, para executá-la é necessário realizar multiplicações e arredondamentos de números reais a cada ponto que percorremos e isso torna o processamento lento.
-
-### DDA
-
-Uma alternativa mais leve é o Digital Differential Analyzer (DDA), o mesmo deriva da Equação Geral da Reta, porém, ao contrario da _Equação Geral da Reta_ , não é necessário realizar multiplicações a cada ponto encontrado.
-
-O algoritmo trabalha de forma incremental, adicionando a _y_ (encontrado na iteração anterior) o _Coeficiente Angular_ da reta. Vejamos seu desenvolvimento:
-
-Seja P(xi,yi) Um ponto a ser plotado no display.
-
-````
-P(x0,y0) = y0 = m * xi + b      //Equação_Geral_Reta
-````
-
-Então...
-
-````
-yi + 1 = m * (xi + 1) + b
-yi + 1 = m * xi + m + b
-yi + 1 = (m * xi +  b) + m
-yi + 1 = y_anterior + m
-yi + 1 = y + m
-````
-
-
-![DDA](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/dda.png?raw=true)
-
-
-Este algoritmo ainda não é o ideal pois são necessários muitos arredondamentos de números reais. A seguir será apresentado uma solução melhor aplicável.
-
-### Algoritmo de Bresenham
-
-Também conhecido como algoritmo do ponto médio, é utilizado para traçar retas de forma incremental, trabalhando apenas com números inteiros.
-
-A ideia do algoritmo é bastante simples, ele utiliza a equação implícita da reta como uma função de decisão, para identificar qual o próximo pixel a ser ativado. Esta função é utilizada de forma incremental em cada pixel. Veja abaixo o desenvolvimento da **Equação Implícita da Reta**.
-
-````
-y = mx + b                            //  Partimos da Equação Reduzida da Reta
-y = (dy/dx)* x + b                    //  Destrinchando 'm' obtemos '(dy/dx)'
-y * dx = dy * x + b * dx              //  Multiplicando a equação por 'dx'
-dy * x + (-y * dx) + b * dx = 0       //  Igualando a equação a 0
-````
-
-Realizando as modificações abaixo para melhor entendimento:
-
-````
-α = dy
-ß = -dx
-c = b * dx
-````
-
-Obtemos:
-````
-decisão = f(x,y) = αx + ßy + c = 0
-````
-
-Se aplicarmos um ponto na equação implícita e obtivemos 0 como resultado, significa que o ponto está sobre a reta.
-
-![Efeito_Eq_Implicita](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Efeito%20Equa%C3%A7%C3%A3o%20Impl%C3%ADcita.png?raw=true)
-
-Seja m = (x0 + 1, y0 + 1/2) o ponto médio entre os pixels  (x0 + 1, y0 + 1) e  (x0 + 1, y0), iremos utilizar a função de decisão para avaliar qual pixel acender.
-
-
-![decPontoMedio](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/PontoM%C3%A9dio.png?raw=true)
-
-
-Note que a reta parte do ponto _(x0, y0)_ logo, não existe decisão tomada anteriormente, podemos identificar o nosso valor de decisão aplicando f(x0 + 1,  y0  + 1/2) - f (x0,  y0).
-
-``
- f (m) - f (inicio) =  ax0 + by0 + c + a + b/2 - (ax0 + by0 + c )
- f (m) - f (inicio) = a + b/2
-``
-
-Logo, nosso valor de decisão inicial é:
-
-````
-d = a + b/2
-````
-
-![pontoMedio](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Ponto_m%C3%A9dio.png?raw=true)
-
-Após identificar qual pixel ativar através da função de decisão, é necessário verificar qual será o nosso próximo ponto médio, (x0 + 2, y0 + 1/2) ou (x0 + 2, y0 + 3/2)
-
-
-![Escolha_e_ne](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Escolha_e_ne.png?raw=true)
-
-
-````C
-if (decisão <= 0){
-  d = m3
- 	putPixel (xi + 1, yi) //Pixel E
-}else{
-  d = m2
-	putPixel (xi + 1, yi + 1) //Pixel NE
-}
-````
-
-_Importante:_ Esta versão do algoritmo de Bresenham funciona apenas para _0° <= angulo <= 1°_ porém podemos obter retas com outros coeficientes angulares por reflexão, como demonstrado na imagem abaixo:
-
-
-![Bresenham_Octantes](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Bresenham_Octantes.png?raw=true)
-
-
-## Debugging - Algoritmo de Bresenham
-
-Execução do algoritmo de Bresenham
-
-
-![Bresenham](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/test%20retas.png?raw=true)
-
+  ```C
+      space_Obj(objeto);
+
+    mat4 viewPort = ( space_World( obj.t.getAllTransformations() ) *
+                     space_Camera() * space_Clipping() * space_Screen() );
+
+    space_Canonical(viewPort);
+    screen();
+```
 
 # Resultados
 
-### Função _DrawLine_
+[Escala Isotrópica](https://youtu.be/L5CahEZfVvo)
 
-Traça retas a partir de 02 pontos utilizando o algoritmo de Bresenham
+[Escala Anisotrópica](https://www.youtube.com/watch?v=SUaNquneizw&feature=youtu.be)
 
+[Rotação em X Y Z](https://www.youtube.com/watch?v=aslIFlS6HCI&index=6&list=UUKpVNRxmWwYfrVPOBd8Cm9g)
 
-![Retas](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Linhas_Octantes.png?raw=true)
+[Rotação no eiox X](https://www.youtube.com/watch?v=Q0UXOgh17ZQ&feature=youtu.be)
 
-
-### Função _InterporlaçãoCor_
-
-````
-	( COR_pontoA - COR_pontoB ) / DISTANCIA ENTRE OS PONTOS
-	
-	Se o canal_de_cor >= 255 ou canal_de_cor <=0
-		stop_interpolação();
-````
-
-
-![interpolaCor](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/interpola%C3%A7%C3%A3oCor.png?raw=true)
-
-
-### Função _DrawTriangle_
-
-Desenha triângulos a partir de 03 pontos
-
-
-![Triangulos](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/drawTriangle.png?raw=true)
+[Rotação no eiox Y](https://www.youtube.com/watch?v=E7mmVW2gaWs&feature=youtu.be)
 
 
 # Problemas encontrados
 
-* Generalizar o algoritmo para traçar retas em todos os octantes
-
-
-![Erro_Bresenham](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Erro_Pseudocodigo.png?raw=true)
-
-
-* Interpolação de cores 
-
-Uma ideia para interporlar cores foi: Incrementar ou decrementar em 1 bit cada canal de cor, até que a cor do canal do ponto de partida fosse igual ao canal de cor do ponto de chegada, porém o npumero de bits necessários é maior do que o disposto para cada canal de cor (geralmente 256 bits).
-
-
-![Erro_InterpolaCor](https://github.com/FelipeNasci/Line_Rasterization/blob/master/images/Erro_Interpola%C3%A7%C3%A3o.png?raw=true)
-
-
+  Problemas na operação de matrizes com a biblioteca GLM pois ela utiliza vetores linha;
+  Problemas ao calcular o espaço da câmera, existem muitas funções;
+  
 # Referências
+[Graphics_Pipeline](https://en.wikipedia.org/wiki/Graphics_pipeline)
 
-[infoescola - Equacoes da Reta](https://www.infoescola.com/geometria-analitica/equacoes-da-reta/).
+[Mundo Educação](https://mundoeducacao.bol.uol.com.br/matematica/matriz-determinantes.htm)
 
-[Bresenham's line algorithm](https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm).
-
-ALGORITMO DE BRESENHAM: O USO MICROCONTROLADORES PARA TRAÇAR RETAS EM LCDs - Jefferson Zortea Moro.
-
-Notas de aula do professor [Christian Azambuja Pagot](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4792938P3)
+*Materiais disponíveis pelo professor e blogs de outros alunos

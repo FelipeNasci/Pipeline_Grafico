@@ -16,16 +16,18 @@ void MyGlDraw(void) {
 
 
 
-    objeto.t.setRotacao(rX,rY,rZ);  //add ROTACAO nos 03 eixos
-    objeto.t.setTranslacao(rX,rY,rZ);  //add TRANSLACAO nos 03 eixeos
+    // objeto.t.setRotacao(0,0,0);  //add ROTACAO nos 03 eixos
+    objeto.t.setEscala(rX,rY,1);
+    //objeto.t.setTranslacao(0.5,0.5,0);  //add TRANSLACAO nos 03 eixeos
 
-    rX += 0.01;
-    rY += 0.01;
+    rX += 0.009;
+    rY += 0.009;
     rZ += 0.01;
 
 
     pipeline( objeto );
-    Bresenham_Test();
+
+   // Bresenham_Test();
 }
 
 void Bresenham_Test()
