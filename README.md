@@ -315,9 +315,11 @@ Escala Isotrópica
 ```
 https://youtu.be/L5CahEZfVvo
 
-
 # Problemas encontrados
 
+  Problemas na operação de matrizes com a biblioteca GLM pois ela utiliza vetores linha;
+  Problemas ao calcular o espaço da câmera, existem muitas funções;
+  
 # Referências
 [Graphics_Pipeline](https://en.wikipedia.org/wiki/Graphics_pipeline)
 
