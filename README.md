@@ -310,7 +310,6 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
 
 # Resultados
 
-```
 [Escala Isotrópica](https://youtu.be/L5CahEZfVvo)
 
 [Escala Anisotrópica](https://www.youtube.com/watch?v=SUaNquneizw&feature=youtu.be)
@@ -321,7 +320,6 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
 
 [Rotação no eiox Y](https://www.youtube.com/watch?v=E7mmVW2gaWs&feature=youtu.be)
 
-```
 
 # Problemas encontrados
 
