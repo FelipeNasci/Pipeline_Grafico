@@ -309,7 +309,7 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
 ```
 Escala Isotrópica
 ```
-[escalaIso](<iframe width="560" height="315" src="https://www.youtube.com/embed/L5CahEZfVvo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>)
+https://youtu.be/L5CahEZfVvo
 
 
 # Problemas encontrados
