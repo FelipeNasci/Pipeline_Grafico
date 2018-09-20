@@ -157,6 +157,9 @@ void screen(){
 
     vec4 aresta, aux;
 
+
+
+
     for (int i = 0; i < tamanho(&obj.aresta); i++){
 
         aresta = obterValor(&obj.aresta, i);
@@ -165,26 +168,25 @@ void screen(){
         posicao2 = aresta[1];
         posicao3 = aresta[2];
 
-        aux = obterValor( &obj.vertex, posicao1 );
+        aux = obterValor( &obj.vertex, posicao1 - 1 );
 
             pointA.x = round( aux[0] );
             pointA.y = round( aux[1] );
 
-        aux = obterValor( &obj.vertex, posicao2 );
+        aux = obterValor( &obj.vertex, posicao2 - 1 );
 
             pointB.x = round( aux[0] );
             pointB.y = round( aux[1] );
 
-        aux = obterValor( &obj.vertex, posicao3 );
+        aux = obterValor( &obj.vertex, posicao3 - 1 );
 
             pointC.x = round( aux[0] );
             pointC.y = round( aux[1] );
 
-           // printf("Ponto A = (%d, %d) \n", pointA.x, pointA.y);
-            //printf("Ponto B = (%d, %d) \n", pointB.x, pointB.y);
 
-            drawTriangle(pointA, pointB, pointC, 0);
+            drawTriangle( pointA, pointB, pointC,   0);
             //drawLine(pointB, pointC);
+
     }
 
 }

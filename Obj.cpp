@@ -11,15 +11,13 @@ using namespace std;
     Obj::Obj(){
         cout << "Objeto instanciado" << endl;
 
-        //loadout = objl::load.LoadFile("cubo.obj");
-
-
         criarLista(&vertex);
         criarLista(&aresta);
         carregaVertece();
         carregaAresta();
 
-        monkey();
+        cubo();
+        //monkey();
     }
 
     ///Variaveis
@@ -45,7 +43,23 @@ using namespace std;
         adicionaElemento( &vertex, {  1,  1, -1, 1 } );
         adicionaElemento( &vertex, {  1,  1,  1, 1 } );
 
-            //bottom
+
+
+        adicionaElemento( &aresta, { 2, 4, 1, 0 } );
+        adicionaElemento( &aresta, { 8, 6, 5, 0 } );
+        adicionaElemento( &aresta, { 5, 2, 1, 0 } );
+        adicionaElemento( &aresta, { 6, 3, 2, 0 } );
+        adicionaElemento( &aresta, { 3, 8, 4, 0 } );
+        adicionaElemento( &aresta, { 1, 8, 5, 0 } );
+        adicionaElemento( &aresta, { 2, 3, 4, 0 } );
+        adicionaElemento( &aresta, { 8, 7, 6, 0 } );
+        adicionaElemento( &aresta, { 5, 6, 2, 0 } );
+        adicionaElemento( &aresta, { 6, 7, 3, 0 } );
+        adicionaElemento( &aresta, { 3, 7, 8, 0 } );
+        adicionaElemento( &aresta, { 1, 4, 8, 0 } );
+/*
+
+       //bottom
         adicionaElemento( &aresta, { 0, 1, 0, 0 } );
         adicionaElemento( &aresta, { 0, 2, 0 ,0 } );
         adicionaElemento( &aresta, { 1, 3, 0 ,0 } );
@@ -63,6 +77,7 @@ using namespace std;
         adicionaElemento( &aresta, { 1, 5, 0 ,0 } );
         adicionaElemento( &aresta, { 2, 6, 0 ,0 } );
         adicionaElemento( &aresta, { 3, 7, 0 ,0 } );
+        */
     }
 
     void Obj::monkey(){
