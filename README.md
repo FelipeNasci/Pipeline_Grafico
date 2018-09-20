@@ -306,6 +306,10 @@ Isso pode ser resolvido com as transformações (matrizes) inversas, aplicadas n
 
 # Resultados
 
+Após implementar todo o processo do pipeline gráfico,chegamos ao seguinte resultado carregando um .obj fornecido pelo professor:
+
+
+
 # Problemas encontrados
 
 # Referências
