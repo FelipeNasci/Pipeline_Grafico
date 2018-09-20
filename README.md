@@ -18,12 +18,11 @@ Danillo Medeiros Moraes Batista - 20160164313
 
 # Introdução
   
-  Este é o segundo trabalho de computação gráfica e tem como objetivo apresentar todo o processo de renderização de um objeto desde a sua criação até a apresentação na tela.
-  Ao final serão utilizados algoritmos para rasterização das primitivas que geram o objeto.
+  Este é o segundo trabalho de computação gráfica e tem como objetivo apresentar um processo conhecido como "pipeline gráfico", sua definição será desenvolvida mais adiante.
   
 ## Considerações iniciais
 
-  Para um melhor entendimento deste texto é necessário o conhecimento sobre coordenadas homogêneas e multiplicações operacões entre matrizes e vetores.
+  Para um melhor entendimento deste texto, é necessário o conhecimento sobre coordenadas homogênea e operacões entre matrizes e vetores.
   
   Os vetores apresentados no texto serão do tipo coluna;
   
@@ -31,21 +30,21 @@ Danillo Medeiros Moraes Batista - 20160164313
   
   Todas as matrizes e vetores utilizadas no texto estão em 4 dimensões, onde os objetos são 3D e a 4ª coordenada é homogênea.
   
-  Para elaboração deste trabalho foi utilizada a biblioteca GLM para tratar as operações com matrizes
+  Para tratar as operações com matrizes foi utilizada a biblioteca GLM. 
   
 ## Pipeline Gráfico
 
-  Em computação, o pipeline gráfico é um modelo conceitual que descreve todos os passos necessários para transformar uma cena 3D em 2D recebendo as coordenadas de tela. Denominamos cada etapa por “Espaço”, onde para da renderizar uma cena passamos por 6 espaços e cada um desempenha uma função específica.
+  Em computação, o pipeline gráfico é um modelo conceitual que descreve todos os passos necessários para transformar valores matemáticos  de uma cena 3D em um descrição 2D, para assim poder ser exibido em uma tela. Denominamos cada etapa por “Espaço”, onde para da renderizar uma cena passamos por 6 espaços e cada um desempenha uma função específica.
   
   ![pipeline](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Pipeline/pipelne.PNG?raw=true)
   
 ## Transformações Geométricas
 
-  Ao longo do pipeline gráfico são executadas uma série de transformações que na realidade são apenas operações entre matrizes e vetores, a seguir veremos as transformações mais comuns utilizadas neste processo.
+  Ao longo do pipeline gráfico, são executadas uma série de transformações que na realidade são apenas operações entre matrizes e vetores, a seguir veremos as transformações mais utilizadas neste processo.
   
 ### Escala
 
-  Esta matriz de transformação aumenta ou diminui o tamanho do objeto.
+  Esta matriz aumenta ou diminui o tamanho do objeto.
   
   ![Escala](https://github.com/FelipeNasci/Pipeline_Grafico/blob/Texto_T2-ICG/images/Transforma%C3%A7%C3%B5es/escala.PNG?raw=true)
   
